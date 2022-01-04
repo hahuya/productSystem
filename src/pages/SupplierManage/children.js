@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import A from '@/components/shuttleFrame.js'
+import A from '@/components/shuttleFrame.js'
 
 function RefChildren (){
     const [box, setBox] = useState({
@@ -11,7 +11,7 @@ function RefChildren (){
         height: 0,
       })
 
-
+      let parentResource = ['伏流千里','江河日下'];
     let boxRef = useRef({})
     function fetchSize(){
         console.log( boxRef.current.offsetWidth,'========------------ boxRef.current.offsetWidth--------==============',boxRef.current)
@@ -51,6 +51,7 @@ function RefChildren (){
           >
             点击更改灰色区块宽高
           </button>
+          <A resourceData={parentResource}/>
         </div>
       );
 }

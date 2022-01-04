@@ -8,7 +8,7 @@ ShuttleFrameRender.propTypes = {
 }
 
 ShuttleFrameRender.defaultProps = {
-    resourceData: [],
+    resourceData: ['mo认列表'],
     resultValue: [],
     testString: '测试默认值-------！！！！！！！'
 }
