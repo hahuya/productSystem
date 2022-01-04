@@ -1,6 +1,6 @@
 let url_prefix
 if(process.env.NODE_ENV==='development'){
-    url_prefix = 'http://192.168.5.246:8500'
+    url_prefix = 'http://192.168.4.246:8500'
 }else{
     url_prefix = ''
 }

@@ -75,6 +75,7 @@ function App() {
                                     <SupplierQuotationTable />
                                 </Route>
                                 <Route path="/customer_inquiry" exact component={SalesInquiryTable} />
+                                <Route path="/supplier" exact component={SupplierManage} />
                                 <Route path="/customer_quotation_history" exact component={SalesInternalQuotationTable} />
                                 <Route path="/purchase_order" exact component={PurchaseOrderTable} />
                                 <Route path="/">

@@ -25,7 +25,7 @@ const menu_items = [
     {label: '进销存管理', url: '', children: [
             {label: '采购订单列表', url: '/purchase_order'},
         ],
-    }
+    },
 ]
 
 
