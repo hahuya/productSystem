@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 import produce from "immer";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
-
 const operators = {
     '=': {name:'=', value:'='},
     'in': {name:'in', value:'in'},
@@ -191,6 +190,7 @@ function GTAdvanceSearchForm(props) {
 
     const handleSearch=()=>{
         changeForm()
+        formik.values.isSearchKeyWoed = false;
         formik.setFieldValue('page', 0)
         formik.submitForm()
         handleClose()
@@ -204,12 +204,16 @@ function GTAdvanceSearchForm(props) {
         }))
     }
 
+    const clickHandler = ()=>{
+        console.log(searches,'========settings========searches---------------searches============settings===========',settings)
+    }
     return (
         <React.Fragment>
+            <p onClick={clickHandler}>测试--------------</p>
             <DialogContent>
                 <Grid container direction={"row"}>
                     {searches.map((value, index )=>(
-                        <Grid item md={12}>
+                        <Grid item md={12} key={`${index}searches`}>
                             <SearchItem
                                 key={value.field}
                                 index={index} searches={searches}

@@ -1,24 +1,26 @@
 import React, {useImperativeHandle, forwardRef,useEffect, useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';//入参数据类型检查
 
-ShuttleFrameRender.propTypes = {
-    resourceData: PropTypes.array,
-    resultValue: PropTypes.array,
-    testString: PropTypes.string
-}
+//forwardRef 不支持 propTypes 和 defaultProps
 
-ShuttleFrameRender.defaultProps = {
-    resourceData: ['mo认列表'],
-    resultValue: [],
-    testString: '测试默认值-------！！！！！！！'
-}
+// ShuttleFrameRender.propTypes = {
+//     resourceData: PropTypes.array,
+//     resultValue: PropTypes.array,
+//     testString: PropTypes.string
+// }
+
+// ShuttleFrameRender.defaultProps = {
+//     resourceData: ['mo认列表'],
+//     resultValue: [],
+//     testString: '测试默认值-------！！！！！！！'
+// }
 function ShuttleFrameRender(props,ref){
     const [testText, setTestText] = useState('useState的数据')
     let testArray = [1,2,3];
     let buildNode = (arr) =>{
         let result = [];
         arr.forEach((element,index)=>{
-            result.push(<span>{element}</span>)
+            result.push(<span key={`${index}buildNode`}>{element}</span>)
         })
         return result
     }
@@ -44,8 +46,8 @@ function ShuttleFrameRender(props,ref){
             
             <div>{testText}</div>
             <div>
-            {props.resourceData.map(element=>{
-                return <span>{element}</span>
+            {props.resourceData.map((element,index)=>{
+                return <span key={`${index}resourceData`}>{element}</span>
             })}
             {buildNode(testArray)}
             </div>

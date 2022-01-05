@@ -59,14 +59,12 @@ function App() {
                     <Grid container style={{flexGlow: 1, height: '100%'}}>
                         <Grid item xs={12}>
                             <Switch>
-                                <Route path="/login">
-                                    <LoginPage />
+                                <Route path="/login" component={LoginPage}>
                                 </Route>
                                 <Route path="/inter_quotation">
                                     <InternalQuotationTable />
                                 </Route>
-                                <Route path="/product" exact>
-                                    <ProductTable />
+                                <Route path="/product" exact component={ProductTable} >
                                 </Route>
                                 <Route path="/product_catalog" exact>
                                     <ProductCatalogTable />

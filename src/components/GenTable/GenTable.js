@@ -50,12 +50,40 @@ function GenTable(props) {
             keyword: '',
             searches: defaultSearches || [],
             page: 0,
+            isSearchKeyWoed:true,
             per_page: perPage || 100,
             ordering: [],
         },
-        onSubmit: values => {
+        onSubmit: (values) => {
+            console.log(values,'----------------values===========values-------------------',formik.values.isSearchKeyWoed,props.settings)
+            let resultData = {};
+            if(values.isSearchKeyWoed){
+                //搜索keyword
+                let searchResult = [];
+                if(values.keyword){
+                    props.settings.columns.forEach(element => {
+                        if(element.searchable){
+                            searchResult.push({
+                                field: element.data,
+                                op: "contains",
+                                value: values.keyword
+                            })
+                        }
+                    });
+                }
+                resultData = {
+                    keyword: "",
+                    ordering: [],
+                    page: 0,
+                    per_page: 100,
+                    searches:searchResult
+                }
+            }else{
+                //高级搜索
+                resultData = values;
+            }
             setLoading(true);
-            props.api({filters: values}).then(data=>{
+            props.api({filters: resultData}).then(data=>{
                 if(!data){return}
                 setData(data.data)
                 setCount(data.count)
