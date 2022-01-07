@@ -15,7 +15,6 @@ function GTToolbar(props) {
     const {settings, formik} = props;
     const {DetailDialog, actions} = props
     const onSearch=()=>{
-        formik.values.isSearchKeyWoed = true;
         formik.setFieldValue('page', 0)
         formik.submitForm()
     }

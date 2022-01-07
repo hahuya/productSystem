@@ -12,15 +12,16 @@ const ShuttleFrameComponent = (props,ref) =>{
         },
     }))
     const {resourceData,resultData} = props;
+    let primaryKey = props.primaryKey || 'id', primaryLable = props.lable || 'lable';
 
-    let rigthSignArray = resultData.map(value=>value.id);
+    let rigthSignArray = resultData.map(value=>value[primaryKey]);
 
     const [showLeftData,setShowLeftData] = useState(resourceData.filter(value=>{
-        return rigthSignArray.indexOf(value.id) == -1
+        return rigthSignArray.indexOf(value[primaryKey]) == -1
     }));//左边栏显示数据(左边搜索数据)
     const [showRigthData,setShowRigthData] = useState(resultData);//右边栏显示数据(右边搜索数据)
     const [leftResourceData,setLeftResourceData] = useState(resourceData.filter(value=>{
-        return rigthSignArray.indexOf(value.id) == -1
+        return rigthSignArray.indexOf(value[primaryKey]) == -1
     }));//左边栏未加搜索条件的数据
     const [rigthResourceData,setRigthResourceData] = useState(resultData);//右边栏未加搜索条件数据
     const [leftAllCheck,setLeftAllCheck] = useState(false);//左边头部全选
@@ -57,10 +58,10 @@ const ShuttleFrameComponent = (props,ref) =>{
         setShowRigthData([...showRigthData,...transferData]);
         let rigthSignArray = [];//结果集的身份id索引数组
         [...showRigthData,...transferData].forEach(value =>{
-            rigthSignArray.push(value.id);
+            rigthSignArray.push(value[primaryKey]);
         })
         let leftResultData = resourceData.filter(value=>{
-            return rigthSignArray.indexOf(value.id) == -1
+            return rigthSignArray.indexOf(value[primaryKey]) == -1
         })
         setLeftResourceData(deepClone(leftResultData));//赋值左边栏二级结果
         setShowLeftData(deepClone(leftResultData));
@@ -68,19 +69,24 @@ const ShuttleFrameComponent = (props,ref) =>{
     }
     const buttonToLeftHandler = ()=>{
         //向左添加数据
-        let rigthResultData = showRigthData.filter(value=>!value.checked);
+        let transferData = showRigthData.filter(value=>value.checked);//选中值
+        let transferDataIndexArray = [];
+        transferData.forEach(value =>{
+            transferDataIndexArray.push(value[primaryKey]);
+        })
+        let rigthResultData = rigthResourceData.filter(value=>transferDataIndexArray.indexOf(value[primaryKey]) == -1);
         setRigthResourceData(rigthResultData);
         setShowRigthData(rigthResultData);
         let rigthSignArray = [];//结果集的身份id索引数组
         rigthResultData.forEach(value =>{
-            rigthSignArray.push(value.id);
+            rigthSignArray.push(value[primaryKey]);
         })
         setLeftResourceData(resourceData.filter(value=>{
-                return rigthSignArray.indexOf(value.id) == -1
+                return rigthSignArray.indexOf(value[primaryKey]) == -1
             })
         )
         setShowLeftData(resourceData.filter(value=>{
-            return rigthSignArray.indexOf(value.id) == -1
+            return rigthSignArray.indexOf(value[primaryKey]) == -1
         }))
         inputEmptyHandler();
     }
@@ -149,7 +155,7 @@ const ShuttleFrameComponent = (props,ref) =>{
                 buildSignObject[type].handler(buildSignObject[type].value)
                 return false
             }
-            buildSignObject[type].handler(buildSignObject[type].value.filter(element=> element.lable.indexOf(buildSignObject[type].inputValue) != -1))
+            buildSignObject[type].handler(buildSignObject[type].value.filter(element=> element[primaryLable].indexOf(buildSignObject[type].inputValue) != -1))
         }
     }
     //没啥意义，为了解决控制台警告
@@ -177,7 +183,7 @@ const ShuttleFrameComponent = (props,ref) =>{
                     {showLeftData.map((element,index)=>{
                         return <div className='box_body_row' key={`${index}left`} onClick={changeCheckboxHandler(index,'left')}>
                             <input type='checkbox' checked={element.checked} className='box_body_row_checkbox' onChange={changeSignHandler}/>
-                            <span className='box_body_row_text'>{element.lable}</span>
+                            <span className='box_body_row_text'>{element[primaryLable]}</span>
                         </div>
                     })}
                 </div>
@@ -204,7 +210,7 @@ const ShuttleFrameComponent = (props,ref) =>{
                     {showRigthData.map((element,index)=>{
                         return <div className='box_body_row' key={`${index}left`} onClick={changeCheckboxHandler(index,'rigth')}>
                             <input type='checkbox' checked={element.checked} className='box_body_row_checkbox' onChange={changeSignHandler}/>
-                            <span className='box_body_row_text'>{element.lable}</span>
+                            <span className='box_body_row_text'>{element[primaryLable]}</span>
                         </div>
                     })}
                 </div>

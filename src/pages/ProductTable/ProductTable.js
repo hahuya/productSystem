@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ProductAPI from "../../api/ProductAPI";
 import ProductDialog from "../ProductDialog/ProductDialog";
 import ProductImportBtnDialog from "./actions/ProductImportBtnDialog";
 import GenTable from "../../components/GenTable/GenTable";
 import ProductSyncBtn from "./actions/ProductSyncBtn";
 import TextSearchField from "../../components/GenTable/GTToolbarSearchField";
+import ShuttleFrame from '@/components/shuttleFrame.js'
+import {deepClone} from '@/utils/test.js'
 
 const columns = [
     {data:'handler', title: '负责人', width:50, searchable: true, type:'text'},
@@ -22,23 +24,35 @@ const columns = [
     {data: "brand", title:"品牌", width:50, searchable: true, type:'text'},
 ]
 
+
 function ProductTable() {
+    const [showColums, setShowColums] = useState(columns);
+
+
+    const successCallBackHandler = (data)=>{
+        setShowColums(data)
+    }
+
+
     return (
-        <GenTable
-            settings={{
-                columns: columns,
-                rowHeights: 150,
-                readOnly: true,
-            }}
-            api={ProductAPI.get_products}
-            DetailDialog={ProductDialog}
-            actions={[
-                ProductImportBtnDialog,
-                ProductSyncBtn,
-                TextSearchField('cat_no', '货号', null, {width: '150px'}),
-                TextSearchField('cas', 'CAS号', null, {width: '150px'}),
-            ]}
-        />
+        <React.Fragment>
+            <ShuttleFrame resourceData={deepClone(columns)} resultData={showColums} successCallBack={successCallBackHandler} primaryKey='data' lable='title'/>
+            <GenTable
+                settings={{
+                    columns: showColums,
+                    rowHeights: 150,
+                    readOnly: true,
+                }}
+                api={ProductAPI.get_products}
+                DetailDialog={ProductDialog}
+                actions={[
+                    ProductImportBtnDialog,
+                    ProductSyncBtn,
+                    TextSearchField('cat_no', '货号', null, {width: '150px'}),
+                    TextSearchField('cas', 'CAS号', null, {width: '150px'}),
+                ]}
+            />
+        </React.Fragment>
     );
 }
 

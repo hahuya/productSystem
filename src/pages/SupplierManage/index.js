@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import ShuttleFrame from '@/components/shuttleFrame.js'
+import ShutterForm from '@/components/shuttleFrame.js'
 import GenTable from "../../components/GenTable/GenTable";
 import ChildrenNodeObject from "./children"
 
@@ -70,8 +70,8 @@ function SupplierManageRender(){
         <div>
             <span onClick={getChildrenHandler}>供应商列表</span>
             <ShuttleFrameComponent ref={shuttleFrameComponentRef} resourceData={resourceData} resultData={rigthTestData}/>
-            {/* <ShuttleFrame ref={shuttleFrameRef} testString={parentTest} resourceData={parentResource}/>
-            <ChildrenNodeObject/> */}
+            <ShutterForm ref={shuttleFrameRef} testString={parentTest} resourceData={parentResource}/>
+            <ChildrenNodeObject/>
             <div style={{"marginTop":"200px"}}></div>
             
         </div>

@@ -1,58 +1,89 @@
-import React, {useImperativeHandle, forwardRef,useEffect, useMemo, useRef, useState} from 'react';
-import PropTypes from 'prop-types';//入参数据类型检查
-
-//forwardRef 不支持 propTypes 和 defaultProps
-
-// ShuttleFrameRender.propTypes = {
-//     resourceData: PropTypes.array,
-//     resultValue: PropTypes.array,
-//     testString: PropTypes.string
-// }
-
-// ShuttleFrameRender.defaultProps = {
-//     resourceData: ['mo认列表'],
-//     resultValue: [],
-//     testString: '测试默认值-------！！！！！！！'
-// }
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import ShuttleFrameComponent from '@/components/ShuttleFrameComponent.js'
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import '@/style/dialogShuttleFrame.scss'
 function ShuttleFrameRender(props,ref){
-    const [testText, setTestText] = useState('useState的数据')
-    let testArray = [1,2,3];
-    let buildNode = (arr) =>{
-        let result = [];
-        arr.forEach((element,index)=>{
-            result.push(<span key={`${index}buildNode`}>{element}</span>)
-        })
-        return result
-    }
-    useImperativeHandle(ref, () => ({
-        getForm: () => {
 
-          return '获取到了子组件---------------------'
+
+    let resourceData = [
+        {
+            id:1,
+            lable:'有效期',
+            checked:false
+        },{
+            id:2,
+            lable:'纯度',
+            checked:false
+        },{
+            id:3,
+            lable:'图谱',
+            checked:false
+        },{
+            id:4,
+            lable:'单位',
+            checked:false
+        },{
+            id:5,
+            lable:'规格',
+            checked:false
+        },{
+            id:6,
+            lable:'结构式',
+            checked:false
+        },{
+            id:7,
+            lable:'分子量',
+            checked:false
+        },{
+            id:8,
+            lable:'周期',
+            checked:false
         },
-        changeText: () => {
-            setTestText('changeText,父组件修改数据类型');
+    ];
+
+
+    let rigthTestData=[{
+        id:6,
+        lable:'结构式',
+        checked:false
+    },{
+        id:7,
+        lable:'分子量',
+        checked:false
+    },];
+
+    let shuttleFrameComponentRef = useRef([]);
+    const [open, setOpen] = useState(false)
+    const openHandler = ()=>{
+        console.log('=============-----------------wwwwwwwww------=================')
+        setOpen(true)
+    }
+    const handleClose = ()=>{
+        setOpen(false)
+    }
+    const saveHandler = ()=>{
+        let resultData = shuttleFrameComponentRef.current.getResultData();
+        if(props.successCallBack && typeof(props.successCallBack) == 'function' && resultData.length != 0){
+            props.successCallBack(resultData)
         }
-      }))
-    let clickText = '测试环境值';
-    function testClickHandler(){
-        console.log(clickText,'------------=======================')
-        setTestText('组件内部修改值----------------------');
-        return clickText;
+        setOpen(false)
     }
     return (
         <React.Fragment>
-            <span onClick={testClickHandler}>穿梭框1111111</span>
-            <p>{props.testString}</p>
-            
-            <div>{testText}</div>
-            <div>
-            {props.resourceData.map((element,index)=>{
-                return <span key={`${index}resourceData`}>{element}</span>
-            })}
-            {buildNode(testArray)}
-            </div>
+            <span className='edit_button' onClick={openHandler}>编辑</span>
+            <Dialog onClose={handleClose} open={open}>
+               <DialogTitle>列表穿梭框</DialogTitle>
+               <div className='dialog_frame_box'>
+                    <ShuttleFrameComponent ref={shuttleFrameComponentRef} resourceData={props.resourceData} resultData={props.resultData} primaryKey={props.primaryKey} lable={props.lable}/>
+               </div>
+               <div className='footer_container'>
+                   <span className='button_style save_btn' onClick={saveHandler}>保存</span>
+                   <span className='button_style close_btn' onClick={handleClose}>关闭</span>
+               </div>
+            </Dialog>
         </React.Fragment>
     )
 }
 
-export default forwardRef(ShuttleFrameRender);
+export default ShuttleFrameRender;

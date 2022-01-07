@@ -190,7 +190,6 @@ function GTAdvanceSearchForm(props) {
 
     const handleSearch=()=>{
         changeForm()
-        formik.values.isSearchKeyWoed = false;
         formik.setFieldValue('page', 0)
         formik.submitForm()
         handleClose()

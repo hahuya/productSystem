@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import 'handsontable/dist/handsontable.full.css';
-import PropTypes from 'prop-types';
+import PropTypes, { element } from 'prop-types';
 import {Grid, Paper} from "@material-ui/core";
 import GTToolbar from "./GTToolbar";
 import GTPaginator from "./GTPaginator";
@@ -50,27 +50,34 @@ function GenTable(props) {
             keyword: '',
             searches: defaultSearches || [],
             page: 0,
-            isSearchKeyWoed:true,
             per_page: perPage || 100,
             ordering: [],
         },
         onSubmit: (values) => {
-            console.log(values,'----------------values===========values-------------------',formik.values.isSearchKeyWoed,props.settings)
             let resultData = {};
-            if(values.isSearchKeyWoed){
+            if(values.keyword){
                 //搜索keyword
-                let searchResult = [];
-                if(values.keyword){
-                    props.settings.columns.forEach(element => {
-                        if(element.searchable){
-                            searchResult.push({
-                                field: element.data,
-                                op: "contains",
-                                value: values.keyword
-                            })
-                        }
-                    });
-                }
+                let signArray = ['numeric','date','time','checkbox'];
+                let searchResult = [],signIdArray = [],resultArray = [];
+                //过滤索引
+                values.searches.forEach(value =>{
+                    if(value.value){
+                        signIdArray.push(value.field)
+                        searchResult.push(value)
+                    }
+                })
+                props.settings.columns.forEach(element=>{
+                    if(signIdArray.indexOf(element.data) == -1)resultArray.push(element)
+                })
+                resultArray.forEach(element => {
+                    if(element.searchable){
+                        searchResult.push({
+                            field: element.data,
+                            op: signArray.indexOf(element.type) == -1? "contains":'=',
+                            value: values.keyword,
+                        })
+                    }
+                });
                 resultData = {
                     keyword: "",
                     ordering: [],
