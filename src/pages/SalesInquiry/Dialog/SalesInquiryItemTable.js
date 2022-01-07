@@ -117,6 +117,7 @@ function SalesInquiryItemTable(props) {
                     title={"询价明细"}
                     action={<FuzzySearchPrdBtn formik={formik} />}
                 />
+                
                 <CardContent>
                     <Grid container>
                         <Grid item style={{flexGrow: 1}}>
