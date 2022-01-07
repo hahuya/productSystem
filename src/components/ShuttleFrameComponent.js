@@ -1,6 +1,7 @@
 //穿梭框组件
 import React, {useImperativeHandle, forwardRef, useEffect, useRef, useState} from 'react';
 import '@/style/shuttleFrame.scss'
+import {deepClone} from '@/utils/test.js'
 
 const ShuttleFrameComponent = (props,ref) =>{
     //设计原理：源数据为基准，以id为身份标志，右边结果集为过滤条件，第一层变量为源数据，第二层变量为分配展示数据，第三层变量为搜索数据（页面显示数据），点击左右穿梭按钮时，数据赋值给第二层变量
@@ -44,9 +45,9 @@ const ShuttleFrameComponent = (props,ref) =>{
                 'handler':setShowRigthData
             }
         };
-        let buildData = [...buildSignObject[type].value];
+        let buildData = deepClone(buildSignObject[type].value);
         buildData[index].checked = !buildData[index].checked;
-        buildSignObject[type].handler([...buildData])
+        buildSignObject[type].handler(deepClone(buildData))
     }
     //穿梭按钮
     const buttonToRigthHandler = ()=>{
@@ -61,8 +62,8 @@ const ShuttleFrameComponent = (props,ref) =>{
         let leftResultData = resourceData.filter(value=>{
             return rigthSignArray.indexOf(value.id) == -1
         })
-        setLeftResourceData([...leftResultData]);//赋值左边栏二级结果
-        setShowLeftData([...leftResultData]);
+        setLeftResourceData(deepClone(leftResultData));//赋值左边栏二级结果
+        setShowLeftData(deepClone(leftResultData));
         inputEmptyHandler();
     }
     const buttonToLeftHandler = ()=>{
@@ -104,6 +105,7 @@ const ShuttleFrameComponent = (props,ref) =>{
                 'rowListHandler':setShowRigthData
             }
         };
+        console.log(type,'=======----------中国银行广州东风西路支行-----------',buildSignObject[type].rowList)
         if(buildSignObject[type].rowList.length == 0){
             buildSignObject[type].handler(false);
             return false
@@ -189,7 +191,7 @@ const ShuttleFrameComponent = (props,ref) =>{
             <div className='shuttle_frame_rigth shuttle_frame_box'>
                 <div className='shuttle_frame_box_header'>
                     <div className='box_header_checkbox'>
-                        <input type='checkbox' checked={rigthAllCheck} onChange={allCheckHandler.bind(this,'rigth')}/>
+                        <input type='checkbox' checked={rigthAllCheck} onChange={allCheckHandler('rigth')}/>
                         <span className='box_header_text'>选中内容</span>
                     </div>
                     <span className='box_header_number'>{rigthCheckNumber}/{rigthShowNumber}</span>
