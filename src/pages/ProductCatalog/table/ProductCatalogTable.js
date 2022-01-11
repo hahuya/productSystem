@@ -3,6 +3,7 @@ import GenTable from "../../../components/GenTable/GenTable";
 import ProductCatalogAPI from "../../../api/ProductCatalogAPI";
 import ProductCatalogDialog from "../dialog/ProductCatalogDialog";
 
+import KeepAlive from 'react-activation'
 
 const columns = [
     {data:'id', title: 'ID', width:50, searchable: true, type:'text'},
@@ -16,6 +17,7 @@ const columns = [
 
 function ProductCatalogTable() {
     return (
+        <KeepAlive name='ProductCatalogNode'>
         <GenTable
             settings={{
                 columns: columns,
@@ -26,6 +28,7 @@ function ProductCatalogTable() {
             DetailDialog={ProductCatalogDialog}
             actions={[]}
         />
+        </KeepAlive>
     );
 }
 

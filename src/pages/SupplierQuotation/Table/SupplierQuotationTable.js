@@ -4,7 +4,7 @@ import SupplierQuotationAPI from "../../../api/SupplierQuotationAPI";
 import TextSearchField from "../../../components/GenTable/GTToolbarSearchField";
 import SuppQuoBulkAddDialog from "../Dialog/SuppQuoBulkAddDialog";
 
-
+import KeepAlive from 'react-activation'
 const columns = [
     {data:'id', title: 'ID', width:40, searchable: true, type:'numeric'},
     {data:'supplier_name', title: '供应商名称', width:80, searchable: true, type:'text'},
@@ -32,19 +32,21 @@ SupplierQuotationTable.propTypes = {
 
 function SupplierQuotationTable() {
     return (
-        <GenTable
-            settings={{
-                columns: columns,
-                rowHeights: 80,
-                readOnly: true,
-            }}
-            api={SupplierQuotationAPI.get_list}
-            DetailDialog={SuppQuoBulkAddDialog}
-            actions={[
-                TextSearchField('cat_no', '货号', null, {width: '100px'}),
-            ]}
-            // defaultSearches={defaultSearches}
-        />
+        <KeepAlive name='InterQuotationNode'>
+            <GenTable
+                settings={{
+                    columns: columns,
+                    rowHeights: 80,
+                    readOnly: true,
+                }}
+                api={SupplierQuotationAPI.get_list}
+                DetailDialog={SuppQuoBulkAddDialog}
+                actions={[
+                    TextSearchField('cat_no', '货号', null, {width: '100px'}),
+                ]}
+                // defaultSearches={defaultSearches}
+            />
+        </KeepAlive>
     );
 }
 

@@ -5,7 +5,8 @@ import {denseTheme} from "./themes/DenseTheme";
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    useHistory,
 } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
 import Header from "./components/Header";
@@ -20,23 +21,28 @@ import GlobalSnackbar from "./components/base/GlobalSnackbar";
 import SupplierQuotationTable from "./pages/SupplierQuotation/Table/SupplierQuotationTable";
 import SalesInquiryTable from "./pages/SalesInquiry/Table/SalesInquiryTable";
 import {setUser} from "./redux/userInfo/userSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector,} from "react-redux";
 import DefaultSpinner from "./components/base/DefaultSpinner";
 import {popErrorMsg} from "./redux/errorMsg/errMsgSlice";
 import PurchaseOrderTable from "./pages/PurchaseOrder/Table/PurchaseOrderTable";
 import SalesInternalQuotationTable from "./pages/SalesInquiry/Table/SalesInternalQuotationTable";
 
+import KeepAlive,{ AliveScope,useAliveController } from 'react-activation'
 import SupplierManage from './pages/SupplierManage/index'
-
-function App() {
+import NavTab from '@/components/NavTab/index.js'
+import '@/style/commen.scss'
+function App(props) {
     const dispatch = useDispatch()
     const [drawOpened, setDrawOpen] = useState(false)
     const classes = useStyles()
     const loading = useSelector(({globalLoading}) =>globalLoading.loading)
 
+
     const handleDrawerOpen=()=>{
         setDrawOpen(!drawOpened)
     }
+    
+    const history = useHistory()
 
     useEffect(()=>{
         AuthAPI.get_user()
@@ -48,6 +54,7 @@ function App() {
     }, [dispatch])
 
     return (
+        <AliveScope>
         <Router>
             <ThemeProvider theme={denseTheme}>
                 <CssBaseline />
@@ -56,6 +63,7 @@ function App() {
                 <MenuDrawer open={drawOpened}/>
                 <DefaultSpinner open={loading} />
                 <main className={clsx(classes.content, {[classes.contentShift]: drawOpened,})}>
+                    <NavTab/>
                     <Grid container style={{flexGlow: 1, height: '100%'}}>
                         <Grid item xs={12}>
                             <Switch>
@@ -64,7 +72,8 @@ function App() {
                                 <Route path="/inter_quotation">
                                     <InternalQuotationTable />
                                 </Route>
-                                <Route path="/product" exact component={ProductTable} >
+                                <Route path="/product" exact >
+                                    <ProductTable />
                                 </Route>
                                 <Route path="/product_catalog" exact>
                                     <ProductCatalogTable />
@@ -72,9 +81,15 @@ function App() {
                                 <Route path="/supplier_quotation" exact>
                                     <SupplierQuotationTable />
                                 </Route>
-                                <Route path="/customer_inquiry" exact component={SalesInquiryTable} />
-                                <Route path="/supplier" exact component={SupplierManage} />
-                                <Route path="/customer_quotation_history" exact component={SalesInternalQuotationTable} />
+                                <Route path="/customer_inquiry" exact>
+                                    <SalesInquiryTable />
+                                </Route>
+                                <Route path="/supplier" exact>
+                                    <SupplierManage />
+                                </Route>
+                                <Route path="/customer_quotation_history" exact>
+                                    <SalesInternalQuotationTable/>
+                                </Route>
                                 <Route path="/purchase_order" exact component={PurchaseOrderTable} />
                                 <Route path="/">
                                 </Route>
@@ -85,6 +100,7 @@ function App() {
                 </main>
             </ThemeProvider>
         </Router>
+        </AliveScope>
     );
 }
 

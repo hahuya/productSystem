@@ -8,6 +8,8 @@ import TextSearchField from "../../components/GenTable/GTToolbarSearchField";
 import ShuttleFrame from '@/components/shuttleFrame.js'
 import {deepClone} from '@/utils/test.js'
 
+
+import KeepAlive from 'react-activation'
 const columns = [
     {data:'handler', title: '负责人', width:50, searchable: true, type:'text'},
     {data:'cat_no', title: '货号', width:50, searchable: true, type:'text'},
@@ -24,18 +26,16 @@ const columns = [
     {data: "brand", title:"品牌", width:50, searchable: true, type:'text'},
 ]
 
-
 function ProductTable() {
     const [showColums, setShowColums] = useState(columns);
-
 
     const successCallBackHandler = (data)=>{
         setShowColums(data)
     }
 
-
     return (
         <React.Fragment>
+            <KeepAlive name='ProductNode'>
             <ShuttleFrame resourceData={deepClone(columns)} resultData={showColums} successCallBack={successCallBackHandler} primaryKey='data' lable='title'/>
             <GenTable
                 settings={{
@@ -52,6 +52,7 @@ function ProductTable() {
                     TextSearchField('cas', 'CAS号', null, {width: '150px'}),
                 ]}
             />
+            </KeepAlive>
         </React.Fragment>
     );
 }

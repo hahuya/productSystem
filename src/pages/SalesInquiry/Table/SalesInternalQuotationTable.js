@@ -5,6 +5,7 @@ import TextSearchField from "../../../components/GenTable/GTToolbarSearchField";
 import GtSelectSearchField from "../../../components/GenTable/GTSelectSearchField";
 import config from "react-global-configuration";
 
+import KeepAlive from 'react-activation'
 const columns = [
     {data: 'id', title: 'ID', width:40, searchable: true, type:'numeric'},
     {data: 'status', title: '状态', width:50, searchable: true, type:'text'},
@@ -46,6 +47,7 @@ SalesInternalQuotationTable.propTypes = {
 
 function SalesInternalQuotationTable() {
     return (
+        <KeepAlive name='SupplierQuotationNode'>
         <GenTable
             settings={{
                 columns: columns,
@@ -63,6 +65,7 @@ function SalesInternalQuotationTable() {
             ]}
             defaultSearches={pddDefaultSearches}
         />
+        </KeepAlive>
     );
 }
 

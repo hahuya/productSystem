@@ -34,7 +34,7 @@ export const useStyles = makeStyles((theme)=>({
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: theme.spacing(7) -drawerWidth,
-        height: `calc(100%)`,
+        height: `calc(100% - 32px);`,
     },
     contentShift: {
         transition: theme.transitions.create('margin', {

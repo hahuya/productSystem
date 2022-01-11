@@ -10,7 +10,7 @@ import {EllipsisTextRenderer} from "../../../components/GenTable/renderers";
 import {IDColorRenderer} from "../Dialog/renderers";
 import ColorLegend from "./actions/ColorLegend";
 
-
+import KeepAlive from 'react-activation'
 SalesInquiryTable.propTypes = {
     
 };
@@ -56,6 +56,7 @@ const columns = [
 
 function SalesInquiryTable() {
     return (
+        <KeepAlive name='SupplierNode'>
         <GenTable
             settings={{
                 columns: columns,
@@ -73,6 +74,7 @@ function SalesInquiryTable() {
             ]}
             perPage={50}
         />
+        </KeepAlive>
     );
 }
 

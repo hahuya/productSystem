@@ -1,11 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef,useState } from 'react';
 import ShutterForm from '@/components/shuttleFrame.js'
 import GenTable from "../../components/GenTable/GenTable";
 import ChildrenNodeObject from "./children"
-
+import KeepAlive from 'react-activation'
 import ShuttleFrameComponent from "@/components/ShuttleFrameComponent.js"
+import {useDispatch, useSelector,} from "react-redux";
+import {setTabList} from '@/redux/commen/index.js'
 
-function SupplierManageRender(){
+
+
+
+function SupplierManageRender(props){
 
     let resourceData = [
         {
@@ -55,26 +60,45 @@ function SupplierManageRender(){
     },];
 
 
-
+    const [show, setShow] = useState(true);
+    const [count,setCount] = useState(0);
     let that = this;
     let parentTest = '父级传送变量';
     let parentResource = ['卧龙低伏','烛阴震身'];
     let shuttleFrameRef = useRef({});
     let shuttleFrameComponentRef = useRef([]);
+    let dispatch = useDispatch();
+
+
+    const tabList = useSelector(({commenStore}) =>commenStore.tabList)
+
+
+
     function getChildrenHandler(){
         let returnData = shuttleFrameComponentRef;
-        console.log(returnData.current.getResultData(),'======returnData----------returnData==========',that)
+        console.log(props.location,'======returnData----------returnData==========')
         // shuttleFrameRef.current.changeText();
+        dispatch(setTabList({'tabList':['卧龙低伏123']}))
+    }
+    const testHandler = ()=>{
+        let buildData = Array.from(tabList.tabList);//类数组转化为数组
+        buildData.push('水波不兴123')
+        console.log(tabList,'===============Assignment to constant variable-----------------',tabList.tabList,buildData)
+        
+        dispatch(setTabList({'tabList':buildData}))
+        setCount(1)
     }
     return (
-        <div>
-            <span onClick={getChildrenHandler}>供应商列表</span>
-            <ShuttleFrameComponent ref={shuttleFrameComponentRef} resourceData={resourceData} resultData={rigthTestData}/>
-            <ShutterForm ref={shuttleFrameRef} testString={parentTest} resourceData={parentResource}/>
-            <ChildrenNodeObject/>
-            <div style={{"marginTop":"200px"}}></div>
-            
-        </div>
+        <KeepAlive name='SupplierNode'>
+            <div>
+                    <span onClick={testHandler}>-------------{count}-----------</span>
+                    <span onClick={getChildrenHandler}>供应商列表</span>
+                    <ShuttleFrameComponent ref={shuttleFrameComponentRef} resourceData={resourceData} resultData={rigthTestData}/>
+                    <ChildrenNodeObject/>
+                    <div style={{"marginTop":"200px"}}></div>
+                
+            </div>
+        </KeepAlive>
     )
 }
 
